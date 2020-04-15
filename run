@@ -1,0 +1,78 @@
+#!/usr/bin/env node
+require("./jbash.js");
+
+set("-x");
+
+function help() {
+  echo(`\
+Usage: run command [--prod]
+
+Runs commands for development tooling and production deployment
+
+Commands:
+  up              Starts the development environment
+  down            Stops the development environment and removes resources
+  db:up           Migrates the database up
+  db:down         Migrates the database down
+  psql            Starts a psql session in the development database
+
+Commands that require --prod argument and use .env.production/HOST_NAME config:  
+  provision       Provisions server   
+  ssh             Starts ssh session  
+  deploy          Deploys the application
+`);
+}
+
+const isProduction = $2 == "--prod";
+const assertProduction = () => {
+  if (!isProduction) {
+    echo("This command is only available with --prod option");
+    exit(1);
+  }
+};
+const sourceDefaultConfig = "set -a; . .env; set +a &&"; // (set -a exports all variables into environment)
+const sourceProductionConfig = "set -a; . .env; . .env.production; set +a &&"; // (set -a exports all variables into environment)
+const composeCommand = isProduction
+  ? `${sourceProductionConfig}  docker-compose -H "$DEPLOY_HOST" -f docker-compose.yml  -f docker-compose.production.yml`
+  : `${sourceDefaultConfig} docker-compose`;
+
+switch ($1) {
+  case "up":
+    exec(`${composeCommand} up --build`);
+    break;
+  case "down":
+    exec(`${composeCommand} down -v`);
+    break;
+  case "db:up":
+    exec(
+      `${composeCommand} run server sh -c 'cd /app/db && npx db-migrate up'`
+    );
+    break;
+  case "db:down":
+    exec(
+      `${composeCommand} run server sh -c 'cd /app/db && npx db-migrate down'`
+    );
+    break;
+  case "psql":
+    exec(
+      `${composeCommand} exec db psql -U $POSTGRES_SUPER_USER -d $POSTGRES_DB`
+    );
+    break;
+  case "provision":
+    assertProduction();
+    exec(
+      `${sourceProductionConfig} && ssh $DEPLOY_HOST 'bash -s' < ./provision.sh`
+    );
+    break;
+  case "ssh":
+    assertProduction();
+    exec(`${sourceProductionConfig} && ssh $DEPLOY_HOST`);
+    break;
+  case "deploy":
+    assertProduction();
+    exec(`${composeCommand} up -d --build`);
+    echo("Deploy successful!");
+    break;
+  default:
+    help();
+}

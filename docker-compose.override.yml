@@ -1,0 +1,17 @@
+version: '3.7'
+services:
+  db:
+    ports:
+      - "5432:5432"  
+  server:
+    ports:      
+      - "$API_PORT:5000"
+    volumes:      
+      - ./server:/app
+      - /app/node_modules    
+  web:
+    ports:
+      - "8080:8080"      
+    volumes:      
+      - ./web:/app
+      - /app/node_modules 

@@ -1,0 +1,21 @@
+version: '3.7'
+services:
+  db:
+    restart: always
+    env_file:
+      - .env.production    
+  server:
+    build:
+      target: production
+    restart: always
+    env_file:
+      - .env.production    
+  web:
+    build:
+      target: production
+    restart: always
+    ports:
+      - "80:8080"
+      - "$API_PORT:8081"
+    env_file:
+      - .env.production

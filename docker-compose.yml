@@ -1,0 +1,36 @@
+version: "3.7"
+services:
+  db:
+    image: postgres:latest
+    expose:
+      - "5432"
+    environment:
+      - POSTGRES_USER=$POSTGRES_SUPER_USER
+      - POSTGRES_PASSWORD=$POSTGRES_SUPER_USER_PASSWORD
+      - POSTGRES_DB
+      - POSTGRES_ANONYMOUS_USER
+      - POSTGRES_KNOWN_USER
+    volumes:
+      - ./server/db/init:/docker-entrypoint-initdb.d
+  server:
+    init: true
+    build:
+      context: server/
+      target: development
+    links:
+      - db
+    environment:
+      - DATABASE_URL=postgres://$POSTGRES_SUPER_USER:$POSTGRES_SUPER_USER_PASSWORD@db:5432/$POSTGRES_DB
+      - JWT_SECRET
+      - POSTGRES_ANONYMOUS_USER
+      - POSTGRES_KNOWN_USER      
+  web:
+    init: true  
+    build:
+      context: web/
+      target: development
+      args:
+        # Reminder: build args do not use env_file so they must be sourced manually (or exist in .env file) when running doker-compose.        
+        API_URL: $API_URL        
+    links:
+      - server    

@@ -1,0 +1,20 @@
+{
+  "name": "src",
+  "version": "1.0.0",
+  "description": "app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bradymholt"
+  },
+  "main": "index.js",  
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@graphile-contrib/pg-simplify-inflector": "^5.0.0-beta.1",
+    "db-migrate": "^0.11.6",
+    "db-migrate-pg": "^1.0.0",
+    "koa": "^2.11.0",
+    "nodemon": "^2.0.2",
+    "postgraphile": "^4.5.5"
+  }
+}
