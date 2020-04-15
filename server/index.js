@@ -6,8 +6,8 @@ const isProduction = process.env.NODE_ENV == "production";
 (async () => {
   const dbmigrate = DBMigrate.getInstance(true, {
     cmdOptions: {
-      "migrations-dir": "db/migrations"
-    }
+      "migrations-dir": "db/migrations",
+    },
   });
   await dbmigrate.up();
 
@@ -16,12 +16,13 @@ const isProduction = process.env.NODE_ENV == "production";
   app.use(
     postgraphile(process.env.DATABASE_URL, "public", {
       watchPg: !isProduction,
-      graphiql: true,
+      graphiql: !isProduction,
       enhanceGraphiql: true,
       dynamicJson: true,
       setofFunctionsContainNulls: false,
       ignoreRBAC: false,
       ignoreIndexes: false,
+      simpleCollections: "only",
       enableCors: true,
       showErrorStack: "json",
       extendedErrors: ["hint", "detail", "errcode"],
@@ -30,9 +31,10 @@ const isProduction = process.env.NODE_ENV == "production";
       legacyRelations: "omit",
       jwtPgTypeIdentifier: "public.jwt_token",
       jwtSecret: process.env.JWT_SECRET,
-      pgDefaultRole: process.env.POSTGRESS_ANONYMOUS_USER
+      pgDefaultRole: process.env.POSTGRESS_ANONYMOUS_USER,
     })
   );
 
-  app.listen(process.env.PORT || 5000);
+  const LISTEN_PORT = 8081;
+  app.listen(LISTEN_PORT);
 })();

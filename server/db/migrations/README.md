@@ -1,4 +1,4 @@
-By default, any new objects created will not be accessible to APP_USER.
+By default, any new objects created will not be accessible to POSTGRES_KNOWN_USER.
 
 To grant access to `table_name`:
 

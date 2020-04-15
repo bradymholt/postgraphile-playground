@@ -1,7 +1,29 @@
 ## Development
 
 ```
-./run up && open http://localhost:8080
+./run && open http://localhost:8080
+```
+
+### GraphQL
+
+GraphiQL:
+
+```
+open http://localhost:8081/graphiql
+```
+
+### Database
+
+Create new migration:
+
+```
+./run db:migration migrationName
+```
+
+Migrate:
+
+```
+./run db:up
 ```
 
 ## Deployment
