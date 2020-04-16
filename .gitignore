@@ -1,2 +1,4 @@
 node_modules/
 .env.production
+dist/
+npm-debug.log*
