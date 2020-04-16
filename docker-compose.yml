@@ -1,7 +1,8 @@
 version: "3.7"
 services:
   db:
-    image: postgres:latest
+    build:
+      context: db/    
     expose:
       - "5432"
     environment:
@@ -9,9 +10,7 @@ services:
       - POSTGRES_PASSWORD=$POSTGRES_SUPER_USER_PASSWORD
       - POSTGRES_DB
       - POSTGRES_ANONYMOUS_USER
-      - POSTGRES_KNOWN_USER
-    volumes:
-      - ./server/db/init:/docker-entrypoint-initdb.d    
+      - POSTGRES_KNOWN_USER     
   server:
     init: true
     build:

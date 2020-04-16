@@ -49,7 +49,7 @@ switch (command) {
     exec(`${composeCommand} up --build`);
     break;
   case "down":
-    //assertNotProduction();
+    assertNotProduction();
     exec(`${composeCommand} down -v`);
     break;
   case "db:migration":
