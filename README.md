@@ -4,9 +4,7 @@
 ./run && open http://localhost:8080
 ```
 
-### GraphQL
-
-GraphiQL:
+### GraphiQL
 
 ```
 open http://localhost:8081/graphiql
@@ -26,11 +24,9 @@ Migrate:
 ./run db:up
 ```
 
-## Deployment
-
 ## Production
 
-### Provisioning
+### Provision
 
 1. Create Droplet in Digital Ocean (Ubuntu / Starter / \$5 plan)
 1. Create `.env.production` file with config for production. See `.env.production.example` as a template.

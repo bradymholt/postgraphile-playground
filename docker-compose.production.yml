@@ -2,6 +2,8 @@ version: '3.7'
 services:
   db:
     restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
     env_file:
       - .env.production    
   server:
@@ -19,3 +21,5 @@ services:
       - "$API_PORT:8081"
     env_file:
       - .env.production
+volumes: 
+     pgdata:

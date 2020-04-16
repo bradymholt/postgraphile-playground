@@ -11,7 +11,7 @@ services:
       - POSTGRES_ANONYMOUS_USER
       - POSTGRES_KNOWN_USER
     volumes:
-      - ./server/db/init:/docker-entrypoint-initdb.d
+      - ./server/db/init:/docker-entrypoint-initdb.d      
   server:
     init: true
     build:
@@ -31,6 +31,6 @@ services:
       target: development
       args:
         # Reminder: build args do not use env_file so they must be sourced manually (or exist in .env file) when running doker-compose.        
-        API_URL: $API_URL        
+        API_URL: http://$HOST_NAME:$API_PORT/graphql
     links:
-      - server    
+      - server

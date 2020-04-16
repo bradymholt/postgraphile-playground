@@ -8,7 +8,7 @@ Usage: run command [--prod]
 Runs commands for development tooling and production deployment
 
 Commands:
-  up                 Starts the development environment
+  up                 Starts the development environment (default command)
   down               Stops the development environment and removes resources
   db:migration name  Creates a new migration
   db:up              Migrates the database up
@@ -37,9 +37,10 @@ const assertNotProduction = () => {
   }
 };
 const sourceDefaultConfig = "set -a; . .env; set +a &&"; // (set -a exports all variables into environment)
-const sourceProductionConfig = "set -a; . .env; . .env.production; set +a &&"; // (set -a exports all variables into environment)
+const sourceProductionConfig = "set -a; . .env; . .env.production; set +a &&";
+const sshURI = "ssh://root@$HOST_NAME";
 const composeCommand = isProduction
-  ? `${sourceProductionConfig}  docker-compose -H "$DEPLOY_HOST" -f docker-compose.yml  -f docker-compose.production.yml`
+  ? `${sourceProductionConfig}  docker-compose -H ${sshURI} -f docker-compose.yml  -f docker-compose.production.yml`
   : `${sourceDefaultConfig} docker-compose`;
 
 switch (command) {
@@ -47,7 +48,7 @@ switch (command) {
     exec(`${composeCommand} up --build`);
     break;
   case "down":
-    assertNotProduction();
+    //assertNotProduction();
     exec(`${composeCommand} down -v`);
     break;
   case "db:migration":
@@ -66,6 +67,9 @@ switch (command) {
       `${composeCommand} run server sh -c 'cd /app/db && npx db-migrate down'`
     );
     break;
+  case "logs":
+    exec(`${composeCommand} logs`);
+    break;
   case "psql":
     exec(
       `${composeCommand} exec db psql -U $POSTGRES_SUPER_USER -d $POSTGRES_DB`
@@ -73,9 +77,7 @@ switch (command) {
     break;
   case "provision":
     assertProduction();
-    exec(
-      `${sourceProductionConfig} && ssh $DEPLOY_HOST 'bash -s' < ./provision.sh`
-    );
+    exec(`${sourceProductionConfig} ssh ${sshURI} 'bash -s' < ./provision.sh`);
     break;
   case "deploy":
     assertProduction();
@@ -84,7 +86,7 @@ switch (command) {
     break;
   case "ssh":
     assertProduction();
-    exec(`${sourceProductionConfig} && ssh $DEPLOY_HOST`);
+    exec(`${sourceProductionConfig} ssh ${sshURI}`);
     break;
 
   default:
