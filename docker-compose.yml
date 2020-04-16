@@ -11,26 +11,26 @@ services:
       - POSTGRES_ANONYMOUS_USER
       - POSTGRES_KNOWN_USER
     volumes:
-      - ./server/db/init:/docker-entrypoint-initdb.d      
+      - ./server/db/init:/docker-entrypoint-initdb.d    
   server:
     init: true
     build:
       context: server/
       target: development
-    links:
-      - db
     environment:
       - DATABASE_URL=postgres://$POSTGRES_SUPER_USER:$POSTGRES_SUPER_USER_PASSWORD@db:5432/$POSTGRES_DB
       - JWT_SECRET
       - POSTGRES_ANONYMOUS_USER
-      - POSTGRES_KNOWN_USER      
+      - POSTGRES_KNOWN_USER    
+    links:
+      - db    
   web:
-    init: true  
+    init: true
     build:
       context: web/
       target: development
       args:
-        # Reminder: build args do not use env_file so they must be sourced manually (or exist in .env file) when running doker-compose.        
-        API_URL: http://$HOST_NAME:$API_PORT/graphql
+        # Reminder: build args do not use env_file so they must be sourced manually (or exist in .env file) when running doker-compose.
+        API_URL: //$HOST_NAME:$API_PORT
     links:
       - server

@@ -14,7 +14,7 @@ Vue.component("font-awesome-icon", FontAwesomeIcon);
 // Setup Apollo
 Vue.use(VueApollo);
 const apolloClient = new ApolloClient({
-  uri: process.env.API_URL,
+  uri: process.env.API_URL + "/graphql",
   request: (operation) => {
     const token = localStorage.getItem("jwt");
     if (!!token) {

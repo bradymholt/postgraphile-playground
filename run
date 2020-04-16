@@ -13,6 +13,7 @@ Commands:
   db:migration name  Creates a new migration
   db:up              Migrates the database up
   db:down            Migrates the database down
+  logs               Shows logs
   psql               Starts a psql session in the development database
 
 Commands that require --prod argument and use .env.production/HOST_NAME config:  
@@ -67,6 +68,7 @@ switch (command) {
       `${composeCommand} run server sh -c 'cd /app/db && npx db-migrate down'`
     );
     break;
+
   case "logs":
     exec(`${composeCommand} logs`);
     break;
