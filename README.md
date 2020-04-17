@@ -2,6 +2,8 @@
 
 This project uses [Vue.js](https://vuejs.org/) as a web frontend, [PostGraphile](https://www.graphile.org/postgraphile/) as a GraphQL server, and PostgreSQL as a database.
 
+![2020-04-17 17 56 56](https://user-images.githubusercontent.com/759811/79620254-efa1c580-80d4-11ea-8330-5815a73216f9.gif)
+
 I used this project to learn more about GraphQL and attempt to setup a project structure that would allow rapid development by not having to make many changes in the server to support changes in the data schema.
 
 Notes:
