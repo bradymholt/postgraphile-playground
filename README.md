@@ -10,9 +10,6 @@ Notes:
 - [db-migrate](https://www.npmjs.com/package/db-migrate) is used for database migrations
 - `./run` is a [jBash](https://www.npmjs.com/package/jbash) script that handles all development tooling and production deployment commands
 
-### server
-- ./run script
-
 ## Development
 
 ```
