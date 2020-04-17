@@ -6,7 +6,7 @@ const isProduction = process.env.NODE_ENV == "production";
 (async () => {
   const dbmigrate = DBMigrate.getInstance(true, {
     cmdOptions: {
-      "migrations-dir": "db/migrations",
+      "migrations-dir": "migrations",
     },
   });
   await dbmigrate.up();
@@ -34,8 +34,7 @@ const isProduction = process.env.NODE_ENV == "production";
       pgDefaultRole: process.env.POSTGRESS_ANONYMOUS_USER,
     })
   );
-
-  const LISTEN_PORT = 8081;
-  app.listen(LISTEN_PORT);
+  
+  app.listen(8080);
 })();
 
