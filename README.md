@@ -1,4 +1,4 @@
-# postgraphile
+# postgraphile-playground
 
 This project uses [Vue.js](https://vuejs.org/) as a web frontend, [PostGraphile](https://www.graphile.org/postgraphile/) as a GraphQL server, and PostgreSQL as a database.
 
